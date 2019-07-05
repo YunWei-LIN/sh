@@ -1,0 +1,57 @@
+shell
+开子shell与不开子shell的区别就在于，环境变量的继承关系，如在子shell中设置的当前变量，不做特殊通道处理的话，父shell是不可见的。
+而在当前shell中执行的话，则所有设置的环境变量都是直接生效可用的。
+
+ftp
+/etc/vsftpd/vsftpd.conf
+第二十九行 匿名上传功能开关
+
+
+
+一级提示符
+
+\u@\h \W]\$
+[root@server0 ~]#
+二级提示符
+>
+
+
+
+echo $0                  //脚本的名称
+echo $1                  //第一个参数
+echo $2                  //第二个参数
+echo $*                  //所有参数
+echo $#                  //所有的综合
+echo $$                  //当前进程的进程号
+echo $?                  //上一个程序的返回状态码
+
+-z 判断变量空位真 
+! -z 判断变量有值真
+
+wc -l #查看行数
+
+
+[ -n $a ]    当a没赋值是等于     [  -n ]
+
+正确输入:  [  -n "$a" ]
+vim /etc/vimrc
+set ts=4 //ts是tabstop
+netstat -ntlup  | grep nginx #差看服务状态
+
+uptime 查看CPU负载
+ifconfig eht0 查看网卡流量
+free (默认单位KB) -m(单位M)  查看内存空间
+df -h   查看磁盘空间
+who | wc -l 当前登录的用户数量
+cat /etc/passwd | wc -l  查看所有用户数量
+ps | wc -l  查看当前的进程数量
+rpm -qa | wc -l 查看已经安装的软件包数量
+
+\b  边界
+\w  匹配数字字母下划线  a-z A-Z 0-9
+\W  不匹配数字字母下划线  a-z A-Z 0-9
+\s  各种空白,如空格,tab制表符
+\S  取反各种空白,如空格,tab制表符
+
+
+

@@ -1,0 +1,333 @@
+root@server0 ~]# yum-config-manager --add http://content.example.com/rhel7.0/x86_64/dvd
+
+[root@server0 ~]# vim /etc/yum.conf
+
+[root@server0 ~]# ls /boot/vmlinuz-*   #查看内核文件
+/boot/vmlinuz-0-rescue-946cb0e817ea4adb916183df8c4fc817
+/boot/vmlinuz-3.10.0-123.1.2.el7.x86_64
+/boot/vmlinuz-3.10.0-123.el7.x86_64
+
+cp  -p  #保留文件原属性不变  
+
+[root@server0 ~]# yum -y reinstall chrony   #重新安装
+
+链路聚合:
+获得帮助: man nmcli-examples====>team1
+        man teamd.conf  ======>runber
+
+sealert #查看SElinux警告日志
+
+wget http........   -O (更改名字) index.html
+
+smbclient -U kenji //server0.example.com/common  (devops)  #测试samba
+
+
+for a in {1..10}
+  do
+    systemctl status nfs-secure || systemctl restart nfs-secure
+    mount -a
+    sleep 5
+  done
+
+
+
+[root@room13pc20 student]# history 
+    1  history -w
+    2  history -w
+    3  vim /usr/local/bin/base-vm 
+    4  rht-vmctl reset classroom
+    5  virsh destroy classroom
+    6  su - student
+    7  poweroff
+    8  rht-vmctl reset classroom
+    9  virsh destroy classroom
+   10  su - student
+   11  poweroff
+   12  ftp://172.25.0.120
+   13  ftp ftp://172.25.0.120
+   14  ftp 172.25.0.120
+   15  rpm -qa vsftpd
+   16  vim /etc/exports
+   17  ls /var/ftp/centos-1804/
+   18  ls
+   19  vim /etc/fstab 
+   20  ls
+   21  tar --help
+   22  ls
+   23  tar -t checkcsa-2.4.0.tar.gz 
+   24  tar -tvf checkcsa-2.4.0.tar.gz 
+   25  tar -xzPf checkcsa-2.4.0.tar.gz
+   26  ls
+   27  ls -a
+   28  vim rht-checkcsa.py 
+   29  ls
+   30  tar -czf checkcsa-2.5.0.tar.gz /root/ReadMe.txt /root/checkcsa.py /root/.checkcsa /root/rht-checkcsa.py 
+   31  ls 
+   32  tar -tvf checkcsa-2.5.0.tar.gz 
+   33  ls 
+   34  rm -rf checkcsa-2.5.0.tar.gz 
+   35  ls
+   36  tar -czPf checkcsa-2.5.0.tar.gz checkcsa.py rht-checkcsa.py ReadMe.txt .checkcsa 
+   37  ls
+   38  ls /root
+   39  python rht-checkcsa.py 
+   40  ls
+   41  ls -a
+   42  exit
+   43  vim rht-checkcsa.py 
+   44  setfacl -m u:student:rwx /root/.checkcsa 
+   45  getfacl /root/.checkcsa
+   46  exit
+   47  ls
+   48  rm -rf score-csa.txt 
+   49  vim .checkcsa 
+   50  tar -xzPf checkcsa-2.4.0.tar.gz 
+   51  ls
+   52  vim ReadMe.txt 
+   53  python rht-checkcsa.py 
+   54  ls
+   55  vim score-csa.txt 
+   56  exit
+   57  ls 
+   58  tar -xzPf checkcsa-2.4.0.tar.gz 
+   59  rm -rf checkcsa-2.5.0.tar.gz 
+   60  ls
+   61  exit
+   62  ls
+   63  vim rht-checkcsa.py 
+   64  tar -czPf checkcsa-2.5.0.tar.gz checkcsa.py rht-checkcsa.py ReadMe.txt .checkcsa 
+   65  ls
+   66  vim rht-checkcsa.py 
+   67  rm -rf checkcsa-2.5.0.tar.gz 
+   68  tar -czPf checkcsa-2.5.0.tar.gz rht-checkcsa.py checkcsa.py ReadMe.txt .checkcsa 
+   69  tar -tvf checkcsa-2.5.0.tar.gz 
+   70  echo 'teacher.niu' | passwd --stdin root
+   71  su - student
+   72  virsh list --all
+   73  exit
+   74  ls
+   75  rm -rf ReadMe.txt 
+   76  rm -rf score-csa.txt 
+   77  cat  debian-binary 
+   78  rm -rf debian-binary 
+   79  ls
+   80  mv rht-checkcsa.py ./.rht-checkcsa.py 
+   81  mv checkcsa.py ./.checkcsa.py 
+   82  ls
+   83  rm -rf checkcsa-2.4.0.tar.gz 
+   84  python ./.rht-checkcsa.py 
+   85  whereis rht-labcheck
+   86  ls bin/
+   87  whereis rht-vmctl 
+   88  alias rht-checkcsa='python rht-ckeckcsa.py'
+   89  alias rht-checkcsa='python rht-checkcsa.py'
+   90  alias
+   91  rht-checkcsa 
+   92  alias rht-checkcsa='python /root/.rht-checkcsa.py'
+   93  rht-checkcsa 
+   94  virsh start classroom
+   95  virsh start server
+   96  rht-checkcsa 
+   97  vim /etc/bashrc 
+   98  source /etc/bashrc
+   99  alias
+  100  exit
+  101  alias
+  102  rht-checkcsa 
+  103  vim /etc/bashrc
+  104  vim /root/.bashrc
+  105  source /root/.bashrc
+  106  exit
+  107  chattr +i ./.rht-checkcsa.py 
+  108  chattr +i ./.checkcsa
+  109  chattr +i ./.checkcsa.py 
+  110  chattr +i /home/student/.checkcsa.py 
+  111  chattr +i /home/student/.rht-checkcsa.py 
+  112  chattr +i /home/student/.checkcsa.py 
+  113  exit
+  114  exit
+  115  init 0
+  116  l
+  117  ls
+  118  bash huanj.sh 
+  119  blkid
+  120  lsblk
+  121  exit
+  122  firefox ftp://172.121.212.120
+  123  firefox ftp://172.121.0.120
+  124  ssh -X root@172.25.0.11
+  125  rht-vmctl reset classroom
+  126  rht-vmctl reset server
+  127  rht-vmctl reset desktop
+  128  alias
+  129  ssh -X root@
+  130  ssh -X root@172.25.0.11
+  131  ssh -X root@172.25.0.10
+  132  bash /root/桌面/sudo.sh
+  133  cd /root/.ssh/
+  134  ls
+  135  vim authorized_keys 
+  136  exit
+  137  vim /etc/bashrc
+  138  chmod /etc/bashrc
+  139  chmod 777 /etc/bashrc
+  140  mv /etc/bashrc /etc/bashrr
+  141  sudo mv /etc/bashrc /etc/bashrr
+  142  vim /home/student/.bashrc 
+  143  source /home/student/.bashrc
+  144  gohh
+  145  ssh -X root@172.121.213.73
+  146  vim /home/student/.bashrc 
+  147  exit
+  148  history
+  149  mkdir /root/tools
+  150  ls /linux-soft/01
+  151  tar -xf /linux-soft/01/tools.tar.gz  -C /root/tools
+  152  ls /root/tools
+  153  ls /root/tools/tools/
+  154  ls /root/tools/tools/other/
+  155  yum -y install  /root/tools/tools/other/oneko-1.2-19.fc24.x86_64.rpm 
+  156  oneko
+  157  vim /root/cat.sh
+  158  chmod +x /root/cat.sh
+  159  /root/cat.sh
+  160  df
+  161  fg
+  162  jobs
+  163  job
+  164  ps
+  165  killall oneko
+  166  vim /root/cat.sh
+  167  crontab -e -u student
+  168  crontab -l -u student
+  169  ls -ld /root/cat.sh
+  170  vim /root/cat.sh
+  171  /root/cat.sh
+  172  ps
+  173  jobs
+  174  ps qux
+  175  ps aux
+  176  top -U root
+  177  systemctl restart crond.service d
+  178  systemctl restart crond.service 
+  179  crontab -e -u student
+  180  systemctl restart crond.service 
+  181  crontab -l -u student
+  182  su - student
+  183  cp /root/cat.sh  /home/student/
+  184  crontab -e -u student
+  185  su - student
+  186  crontab -e -u student
+  187  su - weeken
+  188  su - weekend
+  189  crontab -e -u student
+  190  systemctl restart crond
+  191  crontab -e -u student
+  192  systemctl restart crond
+  193  crontab -l -u student
+  194  gnome-terminal 
+  195  vim /home/student/cat.sh 
+  196  crontab -e
+  197  crontab -e -u student
+  198  systemctl restart crond.
+  199  systemctl restart crond
+  200  crontab -e -u student
+  201  systemctl restart crond
+  202  crontab -l -u student
+  203  crontab -e -u student
+  204  su - student
+  205  mv /usr/share/backgrounds/tedu-wallpaper-01.png /usr/share/backgrounds/tedu-wallpaper-01.png.backup
+  206  ls /usr/share/backgrounds/
+  207  vim /home/student/.bashrc 
+  208  s
+  209  su - student
+  210  vim /home/student/cat.sh 
+  211  /home/student/cat.sh
+  212  vim /home/student/cat.sh 
+  213  /home/student/cat.sh
+  214  vim /home/student/cat.sh 
+  215  /home/student/cat.sh
+  216  reboot
+  217  history 
+[root@room13pc20 student]# crontab -l -u student
+30 21  * * *  /usr/sbin/poweroff
+* * * * *  /usr/bin/oneko
+
+您在 /var/spool/mail/student 中有新邮件
+[root@room13pc20 student]# 
+
+
+netstat -ntulp | grep 22   查看端口
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

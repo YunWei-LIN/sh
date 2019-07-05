@@ -1,0 +1,32 @@
+linux是操作系统,主要应用在服务器上
+硬件是指看得见摸得着的设备
+
+软件:1.系统软件(操作系统) 
+     2.应用软件(APP)
+
+linux系统内核官网: www.kemel.org
+内科作用:管理CUP/内存、驱动基本硬件、文件系统
+版本号:主版本.次版本.修订号 例如 4.8.6
+
+linux目录结构:
+最顶层为根目录(/)---unix/Linux的基本哲学理念:一切皆文件
+
+linux命令:
+pwd:查看当前目录位置
+cd:切换工作目录
+cat:查看文件内容
+ls:查看目录内容
+uname -r:列出内核版本
+lscpu:可出cpu处理器信息
+cat /proc/meminfo:查看内存大小,空闲 情况
+poweroff:关机  init0  shtudown
+reboot:重启    init6
+mkdir /指定目录/创建的目录 :创建目录
+less:分屏阅读
+head /文件:默认查看文件头十行   head -n 3 /文件:查看文件头三行
+tail /文件:默认尾查看文件十行   tail -n 3 /文件:查看文件尾三行
+grep工具:输出包含指定字符串的行
+route -n :查看网关信息
+nmtui:修改ip地址网卡信息和主机名
+
+

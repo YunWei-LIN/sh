@@ -1,0 +1,130 @@
+1.uc.tmooc.cn
+
+2.“进入我的TTS
+
+3.FTP （ftp://ntd1904:acl@176.121.0.120）
+
+4.ipv4地址长度及组成
+  32位以4个十进数来表示，通过2进制表示（给电脑看的）。
+192.168.1.12 24（它也是可以是其他的数字，通过十进制算法，右手1 ，2，4，8，16，32，64，128）
+
+
+5.ipv4地址分类及范围
+  A类   1-127        网+主+主+主
+  B类   128-191      网+网+主+主
+  C类   192-223      网+网+网+主
+  D类   224-239      组播
+  E类   240-254      科研
+
+
+
+
+6.abc类默认子网掩码
+    A类  255.0.0.0
+    B类  255.255.0.0
+    C类  255.255.255.0
+
+
+7.私有地址范围
+    A类    10.0.0.1  —10.255.255.254
+    B类    172.16.0.1 —172.31.255.254
+    C类    192.168.0.1 —192.168.255.254
+    E类    239.0.0.0—239.255.255.255
+
+
+8.备用地址
+   169.254.0.1-169.254.255.254
+   255.255.0.0
+  
+9.windows主机查看ip地址命令及DNS地址：ipconfig/all（查看所有）
+   
+10.<Huawei> 用户视图
+   <Huawei> sys 按Tab
+   return直接返回用户视图
+   <Huawei>display version 查看VRP系统版本
+
+
+11. 配置明文console口命
+   [Huawei]user-interface  console  0
+   [Huawei-ui-console0]authentication-mode  password
+   display  current-configuration  查看配置信息
+   [Huawei-ui-console0]set authentication password simpl  123 
+
+
+12.配置密文console口令
+   [Huawei]user-interface  console  0
+   [Huawei-ui-console0]set authentication password cipher  456
+   [Huawei-ui-console0]authentication-mode  password  （启动）
+
+
+13.配置自动退出超时
+   [Huawei]user-interface  console  0
+   [Huawei-ui-console0]idle-timeout  1440
+
+14.防止弹出信息干扰
+   <sese>undo terminal monitor 
+
+15.恢复出厂默认：
+ <Huawei>reset  saved-configuration  
+  输入y恢复出厂
+  再输入reboot
+  再输入N 表示不保存
+  再输入Y 表示重启
+ 
+16.禁止接口
+  [Huawei]interface  GigabitEthernet  0/0/4（x）
+  [Huawei-GigabitEthernet0/0/4]shutdown 
+
+17.开启或者取消禁用接口
+  [Huawei]interface  GigabitEthernet  0/0/4（x）
+  [Huawei-GigabitEthernet0/0/4]undo shutdown
+
+18.配置交换机管理 IP
+ interface vlan 1 进入vlan 1
+ ip address 192.168.1（x）.100 24
+ undo shutdown 开启 vlan
+
+
+19. 配置路由器远程管理（交换机管理路由器）
+  [Huawei]user-interface vty 0 4                                       设置终端数量
+  [Huawei-ui-vty0-4]user  privilege  level  ?                          查看权限范围
+  [Huawei-ui-vty0-4]user  privilege  level  3                          设置管理级别
+  [Huawei-ui-vty0-4]authentication-mode aaa                            开启aaa认证 
+  [Huawei-ui-vty0-4]aaa                                                进入aaa视图
+  [Huawei-aaa]local-user  bbb（用户） password  cipher  45（密码）     创建用户名和密码
+  [Huawei-aaa]local-user  bbb service-type  telnet                     开启telnet协议
+  在交换机管理员设备输入  telent 192.168.1（x）.254
+
+
+21.在综合布线中，T568A 网线线序：
+  白绿 ，绿 ， 白橙， 蓝 ，白蓝， 橙， 白棕， 棕
+
+22.比较细的笔记
+ (1)路由器支持的远程管理方式包含： Telnet .SSH.  Web。
+ (2)Linux 远程管理默认采用SSH服务提供远程管理入口，其监听的标准端口是 TCP 22
+ (3)云计算的三大服务模式中，IaaS是基础设施（即架构或服务），PaaS是平台或者运行环境 ，SaaS是软件即服务
+ (4)关于子网掩码的作用，就是区分IP地址的网络位与主机位
+ (5)IP地址空间有限，IP地址长度为32位，IP地址分为网络位和主机位
+ (6)配置Windows主机的TCP/IP配置时，ip地址和子网掩码是必须配置的参数
+
+
+
+
+
+
+
+
+
+
+
+
+23.工作组环境的特点：地位平等；管理分散；没有实现集中管理，工作组环境下的用户  本地用户创建\本地存储\本地登入， 且只能登录本地一台计算机
+
+24.特殊用户：
+ Win系统的内置用户无法删除
+  -Administartor:管理员
+  -Guest ：来宾（默认禁用），用在匿名访问等场合
+
+
+
+

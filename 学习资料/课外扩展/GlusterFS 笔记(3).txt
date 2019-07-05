@@ -1,0 +1,291 @@
+﻿一、概述
+存储类型：DAS、NAS、SAN
+常见的网络存储：NFS、Samba、iSCSI 等
+常见的分布式存储：GlusterFS、Ceph、FastDFS
+GlusterFS 特性：无中心节点、可扩展性强、硬件兼容性强、高可用。
+GlusterFS 概念：Node（节点）、Trusted Storage Pool（信任池）、Brick（块）、Volume（卷）
+
+
+二、实验拓扑
+准备4台主机
+    （3台服务器node1、node2、node3，1台客户机client）
+clone-vm7
+
+
+三、网络环境          # 4台都需要操作
+1.打开 virt-manager，双击虚拟机，将第一块网卡的虚拟网络接口选择为'vbr':NAT
+2.每个虚拟机添加一块磁盘(默认20G)
+开机
+3.自动获取IP地址（也可手动配置IP）
+
+nmcli connection modify eth0 ipv4.method auto
+
+nmcli connection up eth0
+4.配置主机名（3台服务器node1、node2、node3，1台客户机client）
+5.ssh远程连接
+
+
+https://www.gluster.org/                                             官网地址
+
+https://download.gluster.org/pub/gluster/glusterfs/LATEST/CentOS/    官网软件包下载地址
+
+http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-6/       CentOS7 yum源
+
+
+
+
+
+四、yum源
+    （安装软件包两种方式选其中一种）
+
+方式一：配置网络yum源（需要能连外网）
+
+##所有存储服务器主机均需要操作##
+1) 修改yum源主机配置文件
+]# vim /etc/yum.conf
+
+cachedir=/var/cache/yum/$basearch/$releasever
+
+keepcache=0                           
+
+# keepcache=1 将下载的软件包及依赖包缓存到cachedir指定的路径/var/cache/yum（方便将所有软件包打包后，给其他主机使用）
+
+2) 创建yum配置文件
+
+]# vim /etc/yum.repos.d/glusterfs.repo
+
+[glusterfs]
+
+name=glusterfs
+
+baseurl=http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-6/
+
+gpgcheck=0
+
+
+3) 安装软件包
+
+yum -y install gluster-server
+      # 服务端node操作
+4)起服务
+
+systemctl start glusterd
+.service   # 服务端node操作
+systemctl enable glusterd.service
+
+
+
+
+方式二：只需配置光盘镜像yum源（不需连外网）
+1) 修改原有yum配置文件
+
+vim /etc/yum.repos.d/*.repo
+将yum源路径baseurl行的 2.254 改为 1.254
+
+2）下载tar包
+访问   
+ftp://176.121.0.120    # 教室环境
+帐号：nsd1904
+
+下载glustefs.tar(1)(2).gz
+
+3）将真机的glustefs.tar(1)(2).gz包传给4台虚拟机
+
+4）解压tar包
+tar -xf glustefs.tar(1)(2).gz
+
+5) 安装软件包
+cd glustefs/
+
+yum -y install *
+
+systemctl start glusterd
+
+systemctl enable glusterd.service
+
+
+
+6)起服务
+
+systemctl start glusterd
+.service
+systemctl enable glusterd.service
+
+
+exit  登出
+
+ssh   登入            # 重新打开终端才能tab gluster 命令
+
+
+
+
+五、创建信任池
+1）修改域名解析
+]# vim /etc/hosts     # 4台虚拟机都操作
+添加 ip 主机名
+
+2)创建信任池 (仅一台服务器操作即可)
+
+]# gluster peer probe node2
+]# gluster peer probe node3
+]# gluster peer status    #查看信任池状态（看不到自己主机的信息）
+
+
+
+#备用操作 （将主机从信任池中删除）
+]# gluster
+
+
+
+
+ peer detach node2    # 添加错了可执行这条命令
+
+
+六、准备存储设备并创建 brick
+
+glusterfs原理(把多个brick组合,类似raid)
+
+       类型:复制卷\分布式卷\Disperse 卷（N=K+M）
+复制卷        类似raid 1
+
+分布式卷      类似raid 0
+
+分布式复制卷  类似raid 1+0
+
+
+Disperse 卷   类似raid 5/6
+
+node1:
+
+      /bricks/brick-1/brick  2G
+
+      /bricks/brick-2/brick  2G
+
+node2:
+
+      /bricks/brick-1/brick  2G
+
+      /bricks/brick-2/brick  2G
+
+node3:
+
+      /bricks/brick-1/brick  2G
+
+      /bricks/brick-2/brick  2G
+
+
+
+
+
+提示：可以直接使用磁盘块设备或者 LV 逻辑卷做 Brick，推荐使用 LV 逻辑卷。
+1）创建 LV 逻辑卷（所有存储服务器都需要操作）,格式化并挂载
+#mkfs.xfs 的 -i size=512 : 默认的值是256KB，当内容小于这个值时，写到inode中，超过这个值时，写到block中。
+
+node1 操作：
+[root@node1 ~]# vgcreate myvg /dev/vdb
+[root@node1 ~]# lvcreate -n node1-brick1 -L 2G myvg
+[root@node1 ~]# lvcreate -n node1-brick2 -L 2G myvg
+[root@node1 ~]# mkfs.xfs -i size=512 /dev/myvg/node1-brick1
+[root@node1 ~]# mkfs.xfs -i size=512 /dev/myvg/node1-brick2
+[root@node1 ~]# mkdir -p /bricks/{brick-1,brick-2}
+[root@node1 ~]# vim /etc/fstab
+/dev/myvg/node1-brick1 /bricks/brick-1 xfs defaults 0 0
+/dev/myvg/node1-brick2 /bricks/brick-2 xfs defaults 0 0
+[root@node1 ~]# mount -a
+[root@node1 ~]# mkdir /bricks/{brick-1,brick-2}/brick     # 强烈建议做这一步，不做这步在创建共享卷时会出现警告
+
+node2 操作：
+[root@node2 ~]# vgcreate myvg /dev/vdb
+[root@node2 ~]# lvcreate -n node2-brick1 -L 2G myvg
+[root@node2 ~]# lvcreate -n node2-brick2 -L 2G myvg
+[root@node2 ~]# mkfs.xfs -i size=512 /dev/myvg/node2-brick1
+[root@node2 ~]# mkfs.xfs -i size=512 /dev/myvg/node2-brick2
+[root@node2 ~]# mkdir -p /bricks/{brick-1,brick-2}
+[root@node2 ~]# vim /etc/fstab
+/dev/myvg/node2-brick1 /bricks/brick-1 xfs defaults 0 0
+/dev/myvg/node2-brick2 /bricks/brick-2 xfs defaults 0 0
+[root@node2 ~]# mount -a
+[root@node2 ~]# mkdir /bricks/{brick-1,brick-2}/brick
+
+node3 操作：
+[root@node3 ~]# vgcreate myvg /dev/vdb
+[root@node3 ~]# lvcreate -n node3-brick1 -L 2G myvg
+[root@node3 ~]# lvcreate -n node3-brick2 -L 2G myvg
+[root@node3 ~]# mkfs.xfs -i size=512 /dev/myvg/node3-brick1
+[root@node3 ~]# mkfs.xfs -i size=512 /dev/myvg/node3-brick2
+[root@node3 ~]# mkdir -p /bricks/{brick-1,brick-2}
+[root@node3 ~]# vim /etc/fstab
+/dev/myvg/node3-brick1 /bricks/brick-1 xfs defaults 0 0
+/dev/myvg/node3-brick2 /bricks/brick-2 xfs defaults 0 0
+[root@node3 ~]# mount -a
+[root@node3 ~]# mkdir /bricks/{brick-1,brick-2}/brick
+
+
+七、创建共享卷（任意存储集群节点操作即可）
+gluster volume create --help      #查看可输入参数信息  (不加参数，默认为分布式)
+
+
+
+1)创建卷
+[root@node1 ~]# gluster volume create distributevolume \
+node1:/bricks/brick-1/brick \
+node2:/bricks/brick-1/brick \
+node3:/bricks/brick-1/brick                     
+
+# 如果之前没做mkdir /bricks/{brick-1,brick-2}/brick，需加追加"force"
+gluster volume create distributevolume \
+node1:/bricks/brick-1 \
+node2:/bricks/brick-1 \
+node3:/bricks/brick-1 \
+force
+
+2）查看卷信息
+[root@node1 ~]# gluster volume info distributevolume
+3）启动卷
+[root@node1 ~]# gluster volume start distributevolume
+
+八、客户端访问
+1）客户端需要安装软件
+[root@client ~]# yum -y install glusterfs-fuse 
+[root@client ~]# mkdir /mnt/distribute
+
+开机自动挂载
+[root@client ~]# vim /etc/fstab
+node1:/distributevolume /mnt/distribute glusterfs defaults,_netdev 0 0
+[root@client ~]# mount -a
+
+临时挂载
+[root@client ~]# mount -t glusterfs node1:/distributevolume /mnt/distribute  # (tab) glusterfs 时，注意单词是否正确
+
+[root@client ~]# df -h
+
+# 查看分布式储存效果
+[root@client ~]# touch /mnt/distribute/file{1..30}
+[root@node1 ~]# ls /bricks/brick-1/brick
+[root@node2 ~]# ls /bricks/brick-1/brick
+[root@node3 ~]# ls /bricks/brick-1/brick
+
+
+附加命令：
+创建复制卷
+# gluster volume create 名称 replica 2 \
+server1:/brick1 \
+server2:/brick2
+创建分布式卷
+# gluster volume create 名称 \
+server1:/brick1 \
+server2:/brick2
+创建分布式复制卷
+# gluster volume create 名称 replica 2 \            # 当参数配置为 repica 2 ，块数要为2的倍数
+server1:/brick1 \
+server2:/brick2 \
+server3:/brick3 \
+server4:/brick4
+创建 disperse 卷 （N=K+M）
+# gluster volume create 名称 disperse-data 4 redundancy 2 \
+server1:/brick1 \
+server2:/brick2 \
+server3:/brick3 \
+server4:/brick4 \
+server5:/brick5 \
+server6:/brick6
